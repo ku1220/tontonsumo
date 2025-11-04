@@ -13,7 +13,12 @@ function GetQueryString() {
 
 const param = GetQueryString();
 const acid = param["id"];
-const wsUri = `ws://192.168.0.10:8082/?id=${acid}`;
+
+// ローカルサーバー対応版
+//const wsUri = `ws://192.168.0.10:8082/?id=${acid}`;
+
+// GitHub、render.com対応版
+const wsUri = `wss://${location.host}/?id=${acid}`;
 
 const socket = new WebSocket(wsUri);
 let base64Image = null;
