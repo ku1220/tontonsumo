@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <meta charset="UTF-8">
+  <title>とんとん紙相撲大会</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+  <!-- 送信画面 -->
+  <div id="sendMenu">
+    <div class="content">
+      <button class="tool-button" id="testBtn" title="戻る">
+        test
+      </button>
+      <button class="tool-button" id="backBtn" title="戻る">
+        <img src="img/Return_icon.png" alt="戻る" class="icon" style="width: 119px;">
+      </button>
+    </div>
+    <label id="swipeLabel" style="font-size: 4vw; text-align: center">上にスワイプして土俵に送ろう！</label>
+    <div id="gifContainer">
+      <img src="img/SwaipeAnimation.gif" id="swipeHintGif" alt="SwaipeAnimation">
+    </div>
+  </div>
+
+  <!-- お絵描き画面 -->
+  <div id="container">
+    <!-- トップメニュー -->
+    <div id="topMenu">
+      <!-- トップメニュー１段目 -->
+      <div class="topMenuRow">
+
+        <!-- テストボタン -->
+        <button class="tool-button" id="testBtn2" style="width: 128px;">
+          切断ボタン
+        </button>
+
+        <button class="tool-button" id="clearBtn" title="クリア" style="width: 128px;">
+          <img src="img/Clear_icon.png" alt="クリア" class="icon" style="width: 119px;">
+        </button>
+        <button class="tool-button" id="saveBtn" title="決定" style="width: 128px;">
+          <img src="img/OK_icon.png" alt="決定" class="icon" style="width: 119px;">
+        </button>
+      </div>
+      <!-- トップメニュー２段目 -->
+      <div class="topMenuRow">
+        <label for="colorPicker" id="colorPicker-icon" style="cursor:pointer;"></label>
+        <input type="color" id="colorPicker" value="#ffffff" style="opacity:0;position:absolute;width:0;height:0;">
+        <button class="tool-button" id="saveColorBtn">
+          <img src="img/ColorPlus_icon.png" alt="カラー追加" class="icon" style="width: 32px; height: 32px;">
+        </button>
+        <div id="colorSwatches">
+          <div class="swatch"></div>
+          <div class="swatch"></div>
+          <div class="swatch"></div>
+          <div class="swatch"></div>
+          <div class="swatch"></div>
+        </div>
+      </div>
+      <!-- トップメニュー３段目 -->
+      <div class="topMenuRow">
+        <button class="tool-button active" id="tool-brush" title="ブラシ">
+          <img src="img/Brush_icon.png" alt="ブラシ" class="icon">
+        </button>
+        <button class="tool-button" id="tool-eraser" title="消しゴム">
+          <img src="img/Eraser_icon.png" alt="消しゴム" class="icon">
+        </button>
+        <button class="tool-button" id="tool-fill" title="塗りつぶし">
+          <img src="img/PaintBucket_icon.png" alt="塗りつぶし" class="icon">
+        </button>
+        <button class="tool-button" id="tool-picker" title="スポイト">
+          <img src="img/Eyedropper_icon.png" alt="スポイト" class="icon">
+        </button>
+        <button class="tool-button" id="undoBtn" title="Undo">
+          <img src="img/Undo_icon.png" alt="Undo" class="icon">
+        </button>
+        <button class="tool-button" id="redoBtn" title="Redo">
+          <img src="img/Redo_icon.png" alt="Redo" class="icon">
+        </button>
+      </div>
+    </div>
+
+    <!-- メインエリア -->
+    <div id="mainArea">
+      <!-- お絵描き部分 -->
+      <div id="main">
+        <img id="bgImage" src="img/DrawingArea.png" style="display:none;" />
+        <img id="guideImage" src="img/Guide.png" style="display:none;" />
+        <canvas id="bgCanvas" width="512" height="1024"></canvas><!-- 背景 -->
+        <canvas id="canvas" width="512" height="1024"></canvas><!-- お絵描き部分 -->
+        <canvas id="guidecanvas" width="512" height="1024"></canvas><!-- ガイド部分 -->
+        <canvas id="mergecanvas" width="1024" height="1024"></canvas><!-- 合成画像表示用 -->
+      </div>
+      <!-- ボトムメニュー -->
+      <div id="bottomMenu">
+        <label>太さ <input type="range" id="lineWidth" min="1" max="50" value="8"> <input type="number" id="lineNum" min="1"
+            max="50" value="8"></label>
+        <label>透明度 <input type="range" id="alphaRange" min="0" max="1" step="0.01" value="1"> <input type="number"
+            id="alphaNum" min="0" max="1" step="0.01" value="1"></label>
+        <label>ぼかし強度 <input type="range" id="blurRange" min="0" max="50" value="0"> <input type="number" id="blurNum"
+            min="0" max="50" value="0"></label>
+      </div>
+    </div>
+  </div>
+
+  <!-- トントン画面 -->
+  <div id="tontonScreen">
+    <div class="compArea">
+      <img id="compImage">
+      <label id="compLabel">ボタンをタップして相手をたおそう！</label>
+
+      <!-- テストボタン -->
+      <button class="tool-button" id="testBtn3" style="width: 128px;">
+        切断ボタン
+      </button>
+      
+    </div>
+    <div class="tontonBtnArea">
+      <button class="tool-button" id="tontonBtn" title="トントンボタン">
+        <img src="img/TonTon.png" alt="トントンボタン" style="height: 100%;">
+      </button>
+    </div>
+  </div>
+
+  <!-- CPUと対戦するか選択画面 -->
+  <div id="waitScreen">
+    <label style="font-size: 7vw; text-align: center; padding-bottom: 20px;">対戦相手を待っています。</label>
+    <label style="font-size: 6vw; text-align: center; padding-bottom: 10px;">CPUと対戦する場合は、<br>下のボタンを押してください。</label>
+    <label style="font-size: 6vw; text-align: center; padding-bottom: 20px;">※カウントが0になると、<br>自動的にCPUと対戦します。</label>
+    <button class="tool-button" id="battleCPUBtn" title="CPUと対戦する">
+      <img src="img/BattleCPU_icon.png" alt="CPUと対戦する" class="icon" style="width: 256px; height: 64px;">
+    </button>
+  </div>
+
+  <!-- 勝敗画面 -->
+  <div id="resultScreen">
+    <img src="img/WinText.png" class="resultImage" id="winTextImage" alt="勝ち画像">
+    <img src="img/LoseText.png" class="resultImage" id="loseTextImage" alt="負け画像">
+    <img src="img/DrawText.png" class="resultImage" id="drawTextImage" alt="引き分け画像">
+    <label id="resultLabel" style="font-size: 7vw; text-align: center; padding: 20px;">ありがとうございました。</label>
+    <div class="topMenuRow" id="resultButtonArea" style="gap: 24px;">
+      <button class="tool-button" id="continueBtn" title="続ける">
+        <img src="img/Continue_icon.png" alt="続ける" class="icon" style="width: 158px; height: 64px;">
+      </button>
+      <button class="tool-button" id="endBtn" title="やめる">
+        <img src="img/End_icon.png" alt="やめる" class="icon" style="width: 158px; height: 64px;">
+      </button>
+    </div>
+  </div>
+  
+  <!-- スクリプト読み込み -->
+  <script src="js/draw.js"></script>
+  <script src="js/websocket.js"></script>
+</body>
+
+</html>

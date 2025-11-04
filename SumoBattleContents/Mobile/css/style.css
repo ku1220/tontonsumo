@@ -1,0 +1,353 @@
+html, body {
+    margin: 0;
+    padding: 0;
+    background: #2e2e2e;
+    font-family: sans-serif;
+    color: white;
+    height: 100dvh;
+    overflow: hidden;
+    width: 100vw;
+
+    background-image: url("../img/back.png");
+    background-repeat: repeat;
+    background-size: auto;
+}
+
+body,* {
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+}
+
+img {
+    pointer-events: none;
+}
+
+#container {
+    height: 100dvh;
+    width: 100vw;
+    display: flex;
+    flex-direction: column;
+}
+
+#mainArea {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    height: 100%;
+    overflow: hidden;
+    position: relative;
+}
+
+#topMenu {
+    display: flex;
+    flex-direction: column;
+    background: rgba(31, 31, 31, 0.85);
+    flex-shrink: 0;
+    z-index: 2;
+    position: relative;
+    align-items: center;
+    padding: 10px 0px;
+}
+
+.topMenuRow {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 6px 16px;
+    justify-content: flex-start;
+}
+
+#colorSwatches {
+    display: flex;
+    gap: 4px;
+}
+
+.swatch {
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+
+    -webkit-mask-image: url(../img/ColorSwatch_icon.png);
+    -webkit-mask-size: contain;
+    -webkit-mask-repeat: no-repeat;
+    -webkit-mask-position: center;
+
+    mask-image: url(../img/ColorSwatch_icon.png);
+    mask-size: contain;
+    mask-repeat: no-repeat;
+    mask-position: center;
+
+    background-color: white;
+}
+
+#colorPicker-icon {
+    width: 32px;
+    height: 32px;
+
+    -webkit-mask-image: url(../img/Color_icon.png);
+    -webkit-mask-size: contain;
+    -webkit-mask-repeat: no-repeat;
+    -webkit-mask-position: center;
+
+    mask-image: url(../img/Color_icon.png);
+    mask-size: contain;
+    mask-repeat: no-repeat;
+    mask-position: center;
+    background-color: rgb(0, 0, 0);
+}
+
+.tool-button {
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    outline: none;
+    display: inline-flex;
+    align-items: center;
+    transition: transform ease-in 0.1s;
+    user-select: none;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    -webkit-appearance: none;
+    appearance: none;
+
+    &:active {
+        transform: scale(0.9);
+    }
+}
+
+.tool-button.active {
+    filter: hue-rotate(100deg) saturate(75%);
+}
+
+.tool-button img.icon {
+    width: 48px;
+    height: 48px;
+    object-fit: contain;
+    filter: drop-shadow(2px 2px 0px rgb(26, 26, 26));
+}
+
+#main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    overflow: auto;
+    padding: 8px;
+}
+
+canvas {
+    touch-action: none;
+    max-height: 65dvh;
+    image-rendering: pixelated;
+    background: transparent;
+    position: relative;
+    z-index: 1;
+}
+#bgCanvas {
+    position: absolute;
+    z-index: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+#guidecanvas {
+    border: 2px solid #888;
+    position: absolute;
+    z-index: 2;
+    pointer-events: none;
+}
+#mergecanvas {
+    max-width: 90vw;
+    z-index: 3;
+    pointer-events: none;
+    display: none; /* 初期は非表示 */
+}
+
+#bottomMenu {
+    background: rgba(31, 31, 31, 0.85);
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    text-align: center;
+    gap: 10px;
+    justify-content: center;
+    padding: 10px 0;
+    padding-bottom: max(env(safe-area-inset-bottom), 2vh);
+    flex-shrink: 0;
+    z-index: 2;
+    position: relative;
+}
+
+label, input, button {
+    font-size: 18px;
+}
+
+input[type=range], input[type=number] {
+    width: 100px;
+}
+
+@media (max-width: 1200px) {
+    .topMenuRow, #bottomMenu {
+        padding-left: 4px;
+        padding-right: 4px;
+    }
+}
+
+#sendMenu {
+    z-index: 99;
+    display: none;
+    flex-direction: column;
+    background: rgba(31, 31, 31, 0.85);
+    flex-shrink: 0;
+    position: relative;
+    align-items: center;
+    padding: 20px 20px;
+    gap: 20px;
+}
+
+.content {
+    flex-direction: column;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.content label {
+    font-size: 4vw;
+}
+
+#swipeHint {
+    font-size: 8vw;
+    animation: bounceUpDown 1.4s infinite ease-in-out;
+    opacity: 0.8;
+    margin-top: 10px;
+    user-select: none;
+}
+
+@keyframes bounceUpDown {
+    0% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+    100% { transform: translateY(0); }
+}
+
+/* キャンバスが上にスライドするアニメーション */
+@keyframes slideUpCanvas {
+    0% { transform: translateY(100) scale(1); opacity: 1; }
+    100% { transform: translateY(-100%) scale(1); opacity: 0; }
+}
+
+.canvas-slide-up {
+    animation: slideUpCanvas 0.6s ease-in-out forwards;
+}
+
+#gifContainer {
+    position: absolute;
+    width: 100vw;
+    height: 90dvh;
+    margin-right: 10vw;
+    display: flex;
+    align-items: center;
+    justify-content: end;
+    pointer-events: none;
+}
+
+#swipeHintGif {
+    width: 50vw;
+    max-width: 400px;
+    height: auto;
+}
+
+#tontonScreen {
+    width: 100vw;
+    height: 100dvh;
+    display: flex;
+    z-index: 999;
+    flex-direction: column;
+
+    /* ⭐ 表示切り替え制御 */
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.6s ease-in-out;
+}
+
+#tontonScreen.show {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.compArea {
+    display: flex;
+    z-index: 999;
+    flex-direction: column;
+    background: rgba(31, 31, 31, 0.85);
+    align-items: center;
+    padding: 20px 20px;
+}
+
+#compImage {
+    max-width: 40vw;
+    height: auto;
+    border: 2px solid #888;
+}
+
+#compLabel {
+    font-size: 5vw;
+    text-align: center;
+    padding-top: 20px;
+}
+
+.tontonBtnArea {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    padding-top: 20px;
+}
+
+#tontonBtn {
+    width: 70vw;
+    height: 70vw;
+}
+
+#waitScreen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100dvh;
+    display: none;
+    z-index: 9999;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: rgba(31, 31, 31, 0.85);
+}
+
+#resultScreen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100dvh;
+    display: flex;
+    z-index: 9999;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: rgba(31, 31, 31, 0.85);
+
+    /* ⭐ 表示切り替え制御 */
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.6s ease-in-out;
+}
+
+#resultScreen.show {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.resultImage {
+    max-width: 90vw;
+    height: auto;
+}
