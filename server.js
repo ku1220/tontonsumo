@@ -16,15 +16,12 @@ const server = http.createServer(app);
 
 // WebSocketサーバー
 const wss = new WebSocketServer({ server });
-wss.on("connection", ws => {
-  ws.on("message", msg => {
-    console.log("recv:", msg.toString());
-    // 全員へ送る
-    for (const client of wss.clients) {
-      client.send(msg.toString());
-    }
-  });
-});
+
+// クライアント管理用
+const clients = new Map();
+const waitingQueue = []; // 待機中のクライアントを管理
+
+let isStartBattle = false; // 対戦開始フラグ
 
 // render.comはPORTが必須
 const port = process.env.PORT || 3000;
