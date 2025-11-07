@@ -1,9 +1,10 @@
-// GitHub、render.com対応版 WebSocketサーバー
+// GitHub、render.com対応版 WebSocketサーバー ///////////////////////
 import express from "express";
 import { WebSocketServer } from "ws";
 import http from "http";
 import path from "path";
 import { fileURLToPath } from "url";
+import fs from "fs";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -26,7 +27,7 @@ let isStartBattle = false; // 対戦開始フラグ
 // render.comはPORTが必須
 const port = process.env.PORT || 3000;
 server.listen(port, () => console.log("running on", port));
-//
+//////////////////////////////////////////////////////////////////
 
 /*
 // Node.js用 WebSocket サーバー（無料）
@@ -117,6 +118,25 @@ wss.on('connection', (ws) => {
         try {
           // Mobile→PCへ画像データを転送
           if (ws.clientId === 'P1' || ws.clientId === 'P2') {
+
+            // 画像データの場合は保存
+            let msgObj;
+            try {
+              msgObj = JSON.parse(message);
+            } catch (e) {
+              msgObj = {};
+            }
+
+            if (msgObj.type === "image" && msgObj.data) {
+              // 例: msgObj.dataがBase64文字列の場合
+              const base64Data = msgObj.data.replace(/^data:image\/\w+;base64,/, "");
+              const buffer = Buffer.from(base64Data, "base64");
+              const filename = `received_${Date.now()}.png`;
+              fs.writeFileSync(`./RankingData/${filename}`, buffer); // ディレクトリは事前に作成しておく
+              console.log("画像保存:", filename);
+            }
+            //
+
             // 画像や操作データをPCに転送
             sendToClient('PC', message);
           }
