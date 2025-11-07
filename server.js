@@ -11,14 +11,18 @@ const __dirname = path.dirname(__filename);
 
 const app = express();
 
-// RankingDataフォルダを公開（確認用）
-app.get("/listRanking", (req, res) => {
-  const files = fs.readdirSync(path.join(__dirname, "RankingData"));
-  res.json(files);
-});
+// RankingDataフォルダを公開
 app.use("/RankingData", express.static(path.join(__dirname, "RankingData")));
 
-// ← Unityビルドのフォルダを公開
+// ランキングJSONを返すAPI
+app.get("/ranking", (req, res) => {
+  const file = path.join(__dirname, "RankingData", "rank.json");
+  if (fs.existsSync(file) == false) return res.json([]);
+  return res.json(JSON.parse(fs.readFileSync(file, "utf-8")));
+});
+//
+
+// Unityビルドのフォルダを公開
 app.use(express.static(path.join(__dirname, "SumoBattleContents")));
 
 const server = http.createServer(app);

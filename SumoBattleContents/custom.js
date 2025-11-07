@@ -35,3 +35,5 @@ window.GetQRCodeURLFromExternal = function () {
   var qrUrl = `https://${location.host}/Mobile/SumoBattleSend.html?id=${acid}`;
   return qrUrl;
 };
+
+// ランキングデータ取得用URL
