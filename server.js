@@ -135,7 +135,7 @@ wss.on('connection', (ws) => {
               fs.writeFileSync(`./RankingData/${filename}`, buffer); // ディレクトリは事前に作成しておく
               console.log("画像保存:", filename);
             }
-            //
+            ///
 
             // 画像や操作データをPCに転送
             sendToClient('PC', message);
