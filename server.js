@@ -12,7 +12,12 @@ const __dirname = path.dirname(__filename);
 const app = express();
 
 // RankingDataフォルダを公開（確認用）
+app.get("/listRanking", (req, res) => {
+  const files = fs.readdirSync(path.join(__dirname, "RankingData"));
+  res.json(files);
+});
 app.use("/RankingData", express.static(path.join(__dirname, "RankingData")));
+
 // ← Unityビルドのフォルダを公開
 app.use(express.static(path.join(__dirname, "SumoBattleContents")));
 
