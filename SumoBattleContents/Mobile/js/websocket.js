@@ -150,10 +150,13 @@ function sendImage() {
     base64Image = mergeCanvas.toDataURL("image/png");
     if (socket.readyState === WebSocket.OPEN && base64Image) {
 
+        const playerID = acid + Math.floor(Math.random() * 10000).toString();
+
         var msg = {
             "type": "image",            // 送信タイプ
             "clientId": clientId,       // ID（P1かP2）
-            "imageData": base64Image    // 画像データ
+            "imageData": base64Image,   // 画像データ
+            "playerID": playerID        // プレイヤーの識別番号(ユニークID)
         };
 
         try {

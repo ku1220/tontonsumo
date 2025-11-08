@@ -130,17 +130,6 @@ wss.on('connection', (ws) => {
         try {
           // Mobile→PCへ画像データを転送
           if (ws.clientId === 'P1' || ws.clientId === 'P2') {
-
-            // サーバーに画像を保存
-            const msgObj = JSON.parse(message);
-            if (msgObj.type === "image" && msgObj.imageData) {
-              const base64Data = msgObj.imageData.replace(/^data:image\/\w+;base64,/, "");
-              const buffer = Buffer.from(base64Data, "base64");
-              const filename = `received_${Date.now()}.png`;
-              fs.writeFileSync(`./RankingData/${filename}`, buffer);
-              console.log("画像保存:", filename);
-            }
-
             // 画像や操作データをPCに転送
             sendToClient('PC', message);
           }
