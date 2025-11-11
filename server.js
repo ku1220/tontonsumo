@@ -179,7 +179,7 @@ wss.on('connection', (ws) => {
               // PNG保存
               const base64Data = msgObj.imageData.replace(/^data:image\/\w+;base64,/, "");
               const buffer = Buffer.from(base64Data, "base64");
-              const filename = `win_${Date.now()}.png`;
+              const filename = `win_${Date.now()}.png`;   // タイムスタンプ
               fs.writeFileSync(`./RankingData/${filename}`, buffer);
               console.log("勝者画像保存:", filename);
 
@@ -188,6 +188,7 @@ wss.on('connection', (ws) => {
               let ranking = [];
               if (fs.existsSync(rankFile)) ranking = JSON.parse(fs.readFileSync(rankFile, "utf-8"));
 
+              // 既存プレイヤーを検索
               let r = ranking.find(r => r.playerID === msgObj.playerID);
               if (!r) {
                 r = { playerID: msgObj.playerID, wins: msgObj.wins, image: filename };
@@ -199,6 +200,17 @@ wss.on('connection', (ws) => {
 
                 r.wins = msgObj.wins;
                 r.image = filename;
+              }
+
+              // 勝利数で降順ソート
+              ranking.sort((a, b) => b.wins - a.wins);
+
+              // 5件を超える場合は削除
+              while (ranking.length > 5) {
+                const removed = ranking.pop();
+                // 画像ファイルも削除
+                const removeFile = path.join(__dirname, "RankingData", removed.image);
+                if (fs.existsSync(removeFile)) fs.unlinkSync(removeFile);
               }
 
               fs.writeFileSync(rankFile, JSON.stringify(ranking));
