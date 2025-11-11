@@ -1,7 +1,7 @@
 [
-  {"name":"ユーザーA","wins":10,"image":"rank1.png"},
-  {"name":"ユーザーB","wins":8,"image":"rank2.png"},
-  {"name":"ユーザーC","wins":5,"image":"rank3.png"},
-  {"name":"ユーザーD","wins":3,"image":"rank4.png"},
-  {"name":"ユーザーE","wins":1,"image":"rank5.png"}
+  {"playerID":"ユーザーA","wins":10,"image":"rank1.png"},
+  {"playerID":"ユーザーB","wins":8,"image":"rank2.png"},
+  {"playerID":"ユーザーC","wins":5,"image":"rank3.png"},
+  {"playerID":"ユーザーD","wins":3,"image":"rank4.png"},
+  {"playerID":"ユーザーE","wins":1,"image":"rank5.png"}
 ]

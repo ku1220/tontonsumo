@@ -188,9 +188,9 @@ wss.on('connection', (ws) => {
               let ranking = [];
               if (fs.existsSync(rankFile)) ranking = JSON.parse(fs.readFileSync(rankFile, "utf-8"));
 
-              let r = ranking.find(r => r.name === msgObj.name);
+              let r = ranking.find(r => r.playerID === msgObj.playerID);
               if (!r) {
-                r = { name: msgObj.name, wins: msgObj.wins, image: filename };
+                r = { playerID: msgObj.playerID, wins: msgObj.wins, image: filename };
                 ranking.push(r);
               } else {
                 // 古い画像消して最新に差し替え（やらなくても動くが推奨）
