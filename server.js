@@ -173,6 +173,37 @@ wss.on('connection', (ws) => {
               }
             }
 
+            // ランキング更新を受信
+            else if (msgObj.type === "winnerReport") {
+              // PNG保存
+              const base64Data = msgObj.imageData.replace(/^data:image\/\w+;base64,/, "");
+              const buffer = Buffer.from(base64Data, "base64");
+              const filename = `win_${Date.now()}.png`;
+              fs.writeFileSync(`./RankingData/${filename}`, buffer);
+              console.log("勝者画像保存:", filename);
+
+              // ランキング更新(rank.json)
+              const rankFile = path.join(__dirname, "RankingData", "rank.json");
+              let ranking = [];
+              if (fs.existsSync(rankFile)) ranking = JSON.parse(fs.readFileSync(rankFile, "utf-8"));
+
+              let r = ranking.find(r => r.name === msgObj.name);
+              if (!r) {
+                r = { name: msgObj.name, wins: msgObj.wins, image: filename };
+                ranking.push(r);
+              } else {
+                // 古い画像消して最新に差し替え（やらなくても動くが推奨）
+                const oldFile = path.join(__dirname, "RankingData", r.image);
+                if (fs.existsSync(oldFile)) fs.unlinkSync(oldFile);
+
+                r.wins = msgObj.wins;
+                r.image = filename;
+              }
+
+              fs.writeFileSync(rankFile, JSON.stringify(ranking));
+              console.log("rank.json更新:", ranking);
+            }
+
             // リスタートを受信
             else if (msgObj.type === 'restart') {
               isStartBattle = false; // 対戦終了フラグをリセット
