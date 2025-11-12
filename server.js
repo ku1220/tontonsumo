@@ -152,7 +152,7 @@ wss.on('connection', (ws) => {
 
             // 強制切断コマンド
             if (msgObj.type === 'forceDisconnect') {
-              Console.log("⚠️ 強制切断コマンド受信");
+              Console.log("強制切断コマンド受信");
               forceDisconnectPlayers();
               return;
             }
@@ -182,7 +182,7 @@ wss.on('connection', (ws) => {
 
             // ランキング更新を受信
             else if (msgObj.type === "winnerReport") {
-              console.log("🏆 ランキング更新受信:", msgObj);
+              console.log("ランキング更新受信:", msgObj);
               // PNG保存
               const base64Data = msgObj.imageData.replace(/^data:image\/\w+;base64,/, "");
               const buffer = Buffer.from(base64Data, "base64");
