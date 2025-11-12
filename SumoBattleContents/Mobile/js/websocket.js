@@ -90,6 +90,12 @@ socket.onmessage = (event) => {
             isStartBattle = false; // 対戦終了フラグをリセット
         }
 
+        // 強制切断を受信
+        else if (data.type === 'forceDisconnect') {
+            alert("管理者により強制切断されました。");
+            socket.close();
+        }
+
     } catch (e) {
         console.log("JSON解析エラー:", e);
     }

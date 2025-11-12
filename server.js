@@ -152,7 +152,8 @@ wss.on('connection', (ws) => {
 
             // 強制切断コマンド
             if (msgObj.type === 'forceDisconnect') {
-              forceDisconnectPlayers();
+              sendToClient('P1', msgStr);
+              sendToClient('P2', msgStr);
               return;
             }
 
@@ -296,26 +297,7 @@ wss.on('connection', (ws) => {
       }
     });
   }
-
-  // プレイヤーを強制切断
-  function forceDisconnectPlayers() {
-    console.log("強制切断コマンド受信");
-    ['P1', 'P2'].forEach(id => {
-      const ws = clients.get(id);
-      if (ws && ws.readyState === ws.OPEN) {
-        ws.close();
-        clients.delete(id);
-        isStartBattle = false; // 対戦終了フラグをリセット
-        console.log(`強制切断: ${id}`);
-      }
-    });
-
-    // 待機キューから次のクライアントを割り当て
-    if (waitingQueue.length > 0) {
-      promoteWaitingPlayers();
-    }
-  }
-
+  
   // 切断時の処理
   ws.on('close', () => {
     if (ws.clientId && ws.clientId !== "waiting") {
