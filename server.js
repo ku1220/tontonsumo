@@ -305,6 +305,7 @@ wss.on('connection', (ws) => {
       if (ws && ws.readyState === ws.OPEN) {
         ws.close();
         clients.delete(id);
+        isStartBattle = false; // 対戦終了フラグをリセット
         console.log(`強制切断: ${id}`);
       }
     });
