@@ -158,7 +158,7 @@ wss.on('connection', (ws) => {
             }
 
             // プレイヤーが待機していることを受信
-            if (msgObj.type === 'waitingScene') {
+            else if (msgObj.type === 'waitingScene') {
               sendToClient(msgObj.player, msgStr);
               return;
             }
