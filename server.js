@@ -152,8 +152,6 @@ wss.on('connection', (ws) => {
 
             // 強制切断コマンド
             if (msgObj.type === 'forceDisconnect') {
-              console.log("強制切断コマンド受信");
-              
               forceDisconnectPlayers();
               return;
             }
@@ -301,10 +299,12 @@ wss.on('connection', (ws) => {
 
   // プレイヤーを強制切断
   function forceDisconnectPlayers() {
+    console.log("強制切断コマンド受信");
     ['P1', 'P2'].forEach(id => {
       const ws = clients.get(id);
       if (ws && ws.readyState === ws.OPEN) {
         ws.close();
+        clients.delete(id);
         console.log(`強制切断: ${id}`);
       }
     });
