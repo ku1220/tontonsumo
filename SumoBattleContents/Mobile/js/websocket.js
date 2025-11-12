@@ -92,8 +92,9 @@ socket.onmessage = (event) => {
 
         // 強制切断を受信
         else if (data.type === 'forceDisconnect') {
-            alert("管理者により強制切断されました。");
+            console.log("管理者により強制切断されました。");
             socket.close();
+            handleDisconnection();
         }
 
     } catch (e) {
