@@ -153,6 +153,7 @@ wss.on('connection', (ws) => {
             // 強制切断コマンド
             if (msgObj.type === 'forceDisconnect') {
               console.log("強制切断コマンド受信");
+              
               forceDisconnectPlayers();
               return;
             }
