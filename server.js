@@ -309,6 +309,11 @@ wss.on('connection', (ws) => {
         console.log(`強制切断: ${id}`);
       }
     });
+
+    // 待機キューから次のクライアントを割り当て
+    if (waitingQueue.length > 0) {
+      promoteWaitingPlayers();
+    }
   }
 
   // 切断時の処理
@@ -317,8 +322,21 @@ wss.on('connection', (ws) => {
       clients.delete(ws.clientId);
       console.log(`切断されました: ${ws.clientId}`);
 
+      // PCが切断された時（アプリが終了した時）、全てのクライアントを切断
+      if (ws.clientId === 'PC') {
+        wss.clients.forEach(client => {
+          if (client.readyState === WebSocket.OPEN) {
+            client.close();
+            console.log(`Client disconnected due to PC disconnect: ${client.clientId}`);
+          }
+        });
+        clients.clear();
+        waitingQueue.length = 0; // キューをクリア
+        isStartBattle = false; // 対戦終了フラグをリセット
+      }
+
       // P1またはP2が切断された場合、待機キューから次のクライアントを割り当て
-      if ((ws.clientId === 'P1' || ws.clientId === 'P2') && waitingQueue.length > 0) {
+      else if ((ws.clientId === 'P1' || ws.clientId === 'P2') && waitingQueue.length > 0) {
         promoteWaitingPlayers();
       }
     }
