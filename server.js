@@ -150,6 +150,12 @@ wss.on('connection', (ws) => {
               msgObj = {};
             }
 
+            // 強制切断コマンド
+            if (msgObj.type === 'forceDisconnect') {
+              forceDisconnectPlayers();
+              return;
+            }
+
             // プレイヤーが待機していることを受信
             if (msgObj.type === 'waitingScene') {
               sendToClient(msgObj.player, msgStr);
@@ -287,6 +293,17 @@ wss.on('connection', (ws) => {
             }
           });
         }
+      }
+    });
+  }
+
+  // プレイヤーを強制切断
+  function forceDisconnectPlayers() {
+    ['P1', 'P2'].forEach(id => {
+      const ws = clients.get(id);
+      if (ws && ws.readyState === ws.OPEN) {
+        ws.close();
+        console.log(`強制切断: ${id}`);
       }
     });
   }
