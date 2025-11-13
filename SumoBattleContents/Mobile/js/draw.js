@@ -631,6 +631,9 @@ document.getElementById("endBtn").onclick = () => {
 // 強制切断、または何らかのエラーで切断された時
 function handleDisconnection() {
 
+    winTextImage.style.display = "none";   // 勝ち画像非表示
+    loseTextImage.style.display = "none";   // 負け画像非表示
+    drawTextImage.style.display = "none"; // 引き分け画像表示
     resultButtonArea.style.display = "none"; // 続ける・終了ボタンエリア非表示
     resultLabel.innerHTML = "申し訳ありません。<br>通信が中断されました。<br>しばらくしてから再試行してください。";
     resultScreen.classList.add("show"); // 勝敗画面を表示
