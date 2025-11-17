@@ -639,20 +639,6 @@ function handleDisconnection() {
     resultScreen.classList.add("show"); // 勝敗画面を表示
 }
 
-// テスト
-document.getElementById("testBtn").onclick = () => {
-
-    compImage.src = mergeCanvas.toDataURL("image/png");
-
-    container.style.display = "none"; // お絵描き部分非表示
-    // ⭐ トントン画面を表示
-    tontonScreen.classList.add("show");
-    showWaitScreen("flex");
-    // ⭐ その他のUIも完全に無効化（必要に応じて）
-    sendMenu.style.display = "none";
-}
-//
-
 // ⭐ トップに戻るボタンの実装（いらないかもしれない）
 /*document.getElementById("returnTopBtn").onclick = () => {
     // 初期状態に戻す

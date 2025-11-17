@@ -272,15 +272,3 @@ function sendGameQuit() {
         console.log("WebSocket未接続");
     }
 }
-
-// テスト
-document.getElementById("testBtn2").onclick = () => {
-    if (socket.readyState === WebSocket.OPEN) {
-        socket.close();
-    }
-}
-document.getElementById("testBtn3").onclick = () => {
-    if (socket.readyState === WebSocket.OPEN) {
-        socket.close();
-    }
-}
