@@ -39,13 +39,11 @@ window.GetQRCodeURLFromExternal = function () {
 window.GetRankingURLFromExternal = function () {
 
   var rankingUrl = `https://${location.host}/ranking/`;
-  console.log("ランキングURL : " + rankingUrl);
   return rankingUrl;
 };
 
 window.GetRankingDataURLFromExternal = function () {
 
   var rankingDataUrl = `https://${location.host}/RankingData/`;
-  console.log("ランキングデータURL : " + rankingDataUrl);
   return rankingDataUrl;
 };
