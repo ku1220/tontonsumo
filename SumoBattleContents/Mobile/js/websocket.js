@@ -122,7 +122,7 @@ window.addEventListener('beforeunload', () => {
 
 // ⭐ 一定時間操作がない場合にWebSocket切断
 let inactivityTimer = null;
-const INACTIVITY_LIMIT = 3 * 60 * 1000; // n分（ミリ秒）
+const INACTIVITY_LIMIT = 3 * 60 * 1000; // 3分（ミリ秒）
 //const INACTIVITY_LIMIT = 5 * 1000; // 30秒（ミリ秒）デバッグ用
 
 function resetInactivityTimer() {
