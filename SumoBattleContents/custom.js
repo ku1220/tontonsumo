@@ -36,4 +36,14 @@ window.GetQRCodeURLFromExternal = function () {
   return qrUrl;
 };
 
-// ランキングデータ取得用URL
+window.GetRankingURLFromExternal = function () {
+
+  var rankingUrl = `https://${location.host}/ranking/`;
+  return rankingUrl;
+};
+
+window.GetRankingDataURLFromExternal = function () {
+
+  var rankingDataUrl = `https://${location.host}/RankingData/`;
+  return rankingDataUrl;
+};
